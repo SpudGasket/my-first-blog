@@ -2,14 +2,21 @@
 
 {% block content %}
     <div class="post">
+      <div class="date">
+      {% if user.is_authenticated %}
         {% if post.published_date %}
-            <div class="date">
-                {{ post.published_date }}
-                <a class="btn btn-default" href="{% url "post_edit" pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            </div>
-
+          {{ post.published_date }}
+              <a class="btn btn-default" href="{% url "post_edit" pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-default" href="{% url "post_remove" pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+            {% else %}
+              <a class="btn btn-default" href="{% url "blog.views.post_publish" pk=post.pk %}">Publish</a>
+              <a class="btn btn-default" href="{% url "post_edit" pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-default" href="{% url "post_remove" pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+          {% endif %}
+        {% else %}
+          <a href="{% url "django.contrib.auth.views.login" %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
         {% endif %}
-
+        </div>
         <h1>{{ post.title }}</h1>
         <p>{{ post.text|linebreaks }}</p>
     </div>
